@@ -1,0 +1,23 @@
+{
+  "overview": "A minimal single-page web application that serves a static 'Hello World' message to visitors. The architecture consists of a single frontend component that renders the greeting without requiring backend services or database interactions.",
+  "requirements": [
+    "The application must display 'Hello World' text when a visitor accesses the web address",
+    "The application must be accessible via HTTP/HTTPS",
+    "The application must respond with a valid HTML page",
+    "The application must include a /health endpoint for monitoring"
+  ],
+  "components": [
+    {
+      "name": "hello-world-web",
+      "componentType": "web-app",
+      "language": "TypeScript / React",
+      "dependsOn": [],
+      "entrypoint": "deployment/web-application",
+      "buildpack": "docker",
+      "appPath": "/hello-world-web",
+      "openAPISpec": "openapi: 3.0.3\ninfo:\n  title: Hello World Web Application\n  version: 1.0.0\n  description: A simple web application that displays 'Hello World'\npaths:\n  /health:\n    get:\n      summary: Health check endpoint\n      description: Returns the health status of the web application\n      operationId: healthCheck\n      responses:\n        '200':\n          description: Application is healthy\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  status:\n                    type: string\n                    example: ok\n                  timestamp:\n                    type: string\n                    format: date-time",
+      "componentAgentInstructions": "Implement a React-based single-page application using TypeScript and Vite as the build tool. Create a simple functional component that renders 'Hello World' as the main heading (h1 element) centered on the page with basic styling. Use CSS modules or inline styles for minimal styling (centered text, readable font size around 48px, system font stack). The application should serve on port 3000 in development but be production-ready with static file serving. Include a /health endpoint that returns JSON with status 'ok' and current timestamp - implement this in a lightweight Express server that serves the built React app. The Dockerfile should use a multi-stage build: first stage builds the React app with Node.js, second stage uses nginx:alpine to serve static files with a custom nginx.conf that handles the /health endpoint via a simple proxy to a health-check service or returns a static JSON response. Ensure proper error handling for missing routes (404 page). The application must be responsive and work on mobile and desktop browsers. Include proper HTML meta tags for charset, viewport, and description. Add a simple favicon. The build output should be optimized for production with minification and tree-shaking enabled."
+    }
+  ],
+  "sourceSpec": "spec-v1"
+}
